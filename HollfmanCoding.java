@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class HollfmanCoding {
     
-    public static HashMap<Character, String> return_tree(HashMap<Character, Integer> charCounts) {
-        List<Character> lista_chars = new ArrayList<>();
-        HashMap<Character, String> char_binary_txt = new HashMap<>(); 
+    public static HashMap<String, String> return_tree(HashMap<String, Integer> charCounts) {
+        List<String> lista_chars = new ArrayList<>();
+        HashMap<String, String> char_binary_txt = new HashMap<>(); 
 
-        for (char c : charCounts.keySet()){
+        for (String c : charCounts.keySet()){
             lista_chars.add(0, c);
             char_binary_txt.put(c,"");
         }
@@ -17,8 +17,8 @@ public class HollfmanCoding {
 
         while (lista_chars.size() > 0) {
           if (binary_tree.size() == 0) {        
-            char char1 = lista_chars.get(0);
-            char char2 = lista_chars.get(1);
+            String char1 = lista_chars.get(0);
+            String char2 = lista_chars.get(1);
 
             char_binary_txt.replace(char2,"1");
             char_binary_txt.replace(char1,"0");
@@ -29,10 +29,10 @@ public class HollfmanCoding {
             lista_chars.removeFirst();
           }else{
             int leaf = binary_tree.get(0);
-            char char1 = lista_chars.get(0);
+            String char1 = lista_chars.get(0);
 
             if (charCounts.get(char1) >= leaf) {
-              for (char c:charCounts.keySet()){
+              for (String c:charCounts.keySet()){
                 if (char_binary_txt.get(c) != ""){
                   char_binary_txt.replace(c, char_binary_txt.get(c) + "0");
                 }
@@ -45,19 +45,19 @@ public class HollfmanCoding {
             }else {
               lista_chars.removeFirst();
               int sum_cont_chars = charCounts.get(char1);
-              List<Character> list_chars_increment = new ArrayList<>();
+              List<String> list_chars_increment = new ArrayList<>();
               list_chars_increment.add(0,char1);
               while (sum_cont_chars <= leaf) {
                 if (lista_chars.size() > 0) {
-                  char char2 = lista_chars.get(0);
+                  String char2 = lista_chars.get(0);
 
                   if (charCounts.get(char2) >= sum_cont_chars) {
-                    for (char c : list_chars_increment){
+                    for (String c : list_chars_increment){
                       char_binary_txt.replace(c, char_binary_txt.get(c) + "0");
                     }
                     char_binary_txt.replace(char2, char_binary_txt.get(char2) + "1");
                   }else {
-                    for (char c : list_chars_increment){
+                    for (String c : list_chars_increment){
                       char_binary_txt.replace(c, char_binary_txt.get(c) + "1");
                     }
                     char_binary_txt.replace(char2, char_binary_txt.get(char2) + "0");
@@ -73,7 +73,7 @@ public class HollfmanCoding {
                 }
               }
 
-              for (char c:charCounts.keySet()){
+              for (String c:charCounts.keySet()){
                 if (list_chars_increment.contains(c)){
                   char_binary_txt.replace(c, char_binary_txt.get(c) + "1");
                 }else {
