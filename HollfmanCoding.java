@@ -4,90 +4,90 @@ import java.util.ArrayList;
 
 public class HollfmanCoding {
     
-    public static HashMap<String, String> return_tree(HashMap<String, Integer> charCounts) {
-        List<String> lista_chars = new ArrayList<>();
-        HashMap<String, String> char_binary_txt = new HashMap<>(); 
+    public static HashMap<String, String> return_tree(HashMap<String, Integer> wordCount) {
+        List<String> lista_words = new ArrayList<>();
+        HashMap<String, String> word_binary_txt = new HashMap<>(); 
 
-        for (String c : charCounts.keySet()){
-            lista_chars.add(0, c);
-            char_binary_txt.put(c,"");
+        for (String c : wordCount.keySet()){
+            lista_words.addLast(c);
+            word_binary_txt.put(c,"");
         }
         
         List<Integer> binary_tree = new ArrayList<>();
 
-        while (lista_chars.size() > 0) {
+        while (lista_words.size() > 0) {
           if (binary_tree.size() == 0) {        
-            String char1 = lista_chars.get(0);
-            String char2 = lista_chars.get(1);
+            String word1 = lista_words.get(0);
+            String word2 = lista_words.get(1);
 
-            char_binary_txt.replace(char2,"1");
-            char_binary_txt.replace(char1,"0");
+            word_binary_txt.replace(word2,"1");
+            word_binary_txt.replace(word1,"0");
 
-            binary_tree.add(0, charCounts.get(char1) + charCounts.get(char2));
+            binary_tree.add(0, wordCount.get(word1) + wordCount.get(word2));
 
-            lista_chars.removeFirst();
-            lista_chars.removeFirst();
+            lista_words.removeFirst();
+            lista_words.removeFirst();
           }else{
             int leaf = binary_tree.get(0);
-            String char1 = lista_chars.get(0);
+            String word1 = lista_words.get(0);
 
-            if (charCounts.get(char1) >= leaf) {
-              for (String c:charCounts.keySet()){
-                if (char_binary_txt.get(c) != ""){
-                  char_binary_txt.replace(c, char_binary_txt.get(c) + "0");
+            if (wordCount.get(word1) >= leaf) {
+              for (String c:wordCount.keySet()){
+                if (word_binary_txt.get(c) != ""){
+                  word_binary_txt.replace(c, word_binary_txt.get(c) + "0");
                 }
               }
-              char_binary_txt.replace(char1, char_binary_txt.get(char1) + "1");
+              word_binary_txt.replace(word1, word_binary_txt.get(word1) + "1");
 
-              binary_tree.set(0, leaf + charCounts.get(char1));
+              binary_tree.set(0, leaf + wordCount.get(word1));
 
-              lista_chars.removeFirst();
+              lista_words.removeFirst();
             }else {
-              lista_chars.removeFirst();
-              int sum_cont_chars = charCounts.get(char1);
-              List<String> list_chars_increment = new ArrayList<>();
-              list_chars_increment.add(0,char1);
-              while (sum_cont_chars <= leaf) {
-                if (lista_chars.size() > 0) {
-                  String char2 = lista_chars.get(0);
+              lista_words.removeFirst();
+              int sum_cont_words = wordCount.get(word1);
+              List<String> list_words_increment = new ArrayList<>();
+              list_words_increment.add(0,word1);
+              while (sum_cont_words <= leaf) {
+                if (lista_words.size() > 0) {
+                  String word2 = lista_words.get(0);
 
-                  if (charCounts.get(char2) >= sum_cont_chars) {
-                    for (String c : list_chars_increment){
-                      char_binary_txt.replace(c, char_binary_txt.get(c) + "0");
+                  if (wordCount.get(word2) >= sum_cont_words) {
+                    for (String c : list_words_increment){
+                      word_binary_txt.replace(c, word_binary_txt.get(c) + "0");
                     }
-                    char_binary_txt.replace(char2, char_binary_txt.get(char2) + "1");
+                    word_binary_txt.replace(word2, word_binary_txt.get(word2) + "1");
                   }else {
-                    for (String c : list_chars_increment){
-                      char_binary_txt.replace(c, char_binary_txt.get(c) + "1");
+                    for (String c : list_words_increment){
+                      word_binary_txt.replace(c, word_binary_txt.get(c) + "1");
                     }
-                    char_binary_txt.replace(char2, char_binary_txt.get(char2) + "0");
+                    word_binary_txt.replace(word2, word_binary_txt.get(word2) + "0");
                   }
 
-                  list_chars_increment.add(0,char2);
+                  list_words_increment.add(0,word2);
 
-                  sum_cont_chars += charCounts.get(char2);
+                  sum_cont_words += wordCount.get(word2);
 
-                  lista_chars.removeFirst();
+                  lista_words.removeFirst();
                 }else {
                   break;
                 }
               }
 
-              for (String c:charCounts.keySet()){
-                if (list_chars_increment.contains(c)){
-                  char_binary_txt.replace(c, char_binary_txt.get(c) + "1");
+              for (String c:wordCount.keySet()){
+                if (list_words_increment.contains(c)){
+                  word_binary_txt.replace(c, word_binary_txt.get(c) + "1");
                 }else {
-                  if (char_binary_txt.get(c) != ""){
-                    char_binary_txt.replace(c, char_binary_txt.get(c) + "0");
+                  if (word_binary_txt.get(c) != ""){
+                    word_binary_txt.replace(c, word_binary_txt.get(c) + "0");
                   }
                 }
               }
 
-              binary_tree.set(0, leaf + sum_cont_chars);
+              binary_tree.set(0, leaf + sum_cont_words);
             }
           }
-          System.out.println(binary_tree.get(0) + " : " + char_binary_txt + " : " + lista_chars);
+          System.out.println(binary_tree.get(0) + " : " + word_binary_txt + " : " + lista_words);
         }
-        return char_binary_txt;
+        return word_binary_txt;
     }
 }
