@@ -1,23 +1,57 @@
-import java.util.HashMap;
+import java.io.IOException;
+import java.util.*;
 
 class ContTextChar{
-    public static void main(String args[]){
-        String text = "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora eaque possimus rerum architecto vero impedit necessitatibus adipisci voluptate, quia perferendis libero labore facere aliquid corrupti illo suscipit corporis ea quae.";
-        HashMap<String, Integer> charCounts = new HashMap<>();
+    public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm)
+    {
+        List<Map.Entry<String, Integer> > list =
+              new LinkedList<Map.Entry<String, Integer> >(hm.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer> >() {
+            public int compare(Map.Entry<String, Integer> o1, 
+                              Map.Entry<String, Integer> o2)
+            {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+        
+        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> aa : list) {
+            temp.put(aa.getKey(), aa.getValue());
+        }
+        return temp;
+    }
+
+    public static void main(String args[]) throws IOException{
+        String text = ReaderAndWrite.read("input.txt");
+        HashMap<String, Integer> wordCounts = new HashMap<>();
+
+        text = text.replaceAll(" ", " S2040 ");
+        text = text.replaceAll(" ", " BRA12 ");
         
         for (String c : text.split(" ")) {
-            if (charCounts.containsKey(c)) {
-              charCounts.put(c, charCounts.get(c) + 1);
+            if (wordCounts.containsKey(c)) {
+              wordCounts.put(c, wordCounts.get(c) + 1);
             } else {
-              charCounts.put(c, 1);
+              wordCounts.put(c, 1);
             }
           }
 
-        charCounts.forEach((key,value) -> System.out.println(key + " : " + value));
+        wordCounts = sortByValue(wordCounts);
 
-        HashMap<String, String> char_binary_txt = HollfmanCoding.return_tree(charCounts);
+        text = text.replaceAll(" ", "");
 
-        System.out.println(charCounts);
-        System.out.println(char_binary_txt);
-      }
+        wordCounts.forEach((key,value) -> System.out.println(key + " : " + value));
+
+        HashMap<String, String> word_binary_txt = HollfmanCoding.return_tree(wordCounts);
+
+        for (String word: word_binary_txt.keySet()) {
+          int charCode = Integer.parseInt(word_binary_txt.get(word), 2);
+          String bit_str = String.valueOf((char) charCode);
+
+          text = text.replaceAll(word, bit_str);
+        }
+
+        System.out.println(text);
+    }
 }
