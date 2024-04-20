@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.*;
 
-class ContTextChar{
+class CompacterAndDescompacter{
     public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm)
     {
         List<Map.Entry<String, Integer> > list =
