@@ -22,8 +22,8 @@ class CompacterAndDescompacter{
         return temp;
     }
 
-    public static void main(String args[]) throws IOException{
-        String text = ReaderAndWrite.read("input.txt");
+    public static void compacter(String path) throws IOException{
+        String text = ReaderAndWrite.read(path);
         HashMap<String, Integer> wordCounts = new HashMap<>();
 
         text = text.replaceAll(" ", " S2040 ");
@@ -57,6 +57,8 @@ class CompacterAndDescompacter{
           txt_header += word + " : " + wordCounts.get(word) + "\n";
         }
 
-        ReaderAndWrite.write(txt_header + text,"output.txt");
+        int dot_index = path.indexOf(".");
+        String output_path = path.substring(0,dot_index) + ".z" + path.substring(dot_index + 1);
+        ReaderAndWrite.write(txt_header + text,output_path);
     }
 }
