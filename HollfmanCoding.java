@@ -86,7 +86,7 @@ public class HollfmanCoding {
               binary_tree.set(0, leaf + sum_cont_words);
             }
           }
-          System.out.println(binary_tree.get(0) + " : " + word_binary_txt + " : " + lista_words);
+          // System.out.println(binary_tree.get(0) + " : " + word_binary_txt + " : " + lista_words);
         }
         return word_binary_txt;
     }

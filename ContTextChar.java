@@ -41,7 +41,7 @@ class ContTextChar{
 
         text = text.replaceAll(" ", "");
 
-        wordCounts.forEach((key,value) -> System.out.println(key + " : " + value));
+        // wordCounts.forEach((key,value) -> System.out.println(key + " : " + value));
 
         HashMap<String, String> word_binary_txt = HollfmanCoding.return_tree(wordCounts);
 
@@ -52,6 +52,11 @@ class ContTextChar{
           text = text.replaceAll(word, bit_str);
         }
 
-        System.out.println(text);
+        String txt_header = new String();
+        for (String word: wordCounts.keySet()){
+          txt_header += word + " : " + wordCounts.get(word) + "\n";
+        }
+
+        ReaderAndWrite.write(txt_header + text,"output.txt");
     }
 }
