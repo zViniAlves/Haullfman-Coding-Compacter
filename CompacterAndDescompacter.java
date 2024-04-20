@@ -54,11 +54,17 @@ class CompacterAndDescompacter{
 
         String txt_header = new String();
         for (String word: wordCounts.keySet()){
-          txt_header += word + " : " + wordCounts.get(word) + "\n";
+          txt_header += word + " : " + Integer.toHexString(wordCounts.get(word)) + "\n";
         }
+        txt_header += "E_O_H\n";
 
         int dot_index = path.indexOf(".");
         String output_path = path.substring(0,dot_index) + ".z" + path.substring(dot_index + 1);
         ReaderAndWrite.write(txt_header + text,output_path);
+    }
+
+    public static void descompacter(String path) throws IOException {
+      String text = ReaderAndWrite.read(path);
+      System.out.println(text);
     }
 }
