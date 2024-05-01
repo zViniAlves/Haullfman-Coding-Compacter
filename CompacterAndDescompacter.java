@@ -1,5 +1,12 @@
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Comparator;
 
 class CompacterAndDescompacter{
     public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm)
@@ -27,7 +34,7 @@ class CompacterAndDescompacter{
         HashMap<String, Integer> wordCounts = new HashMap<>();
 
         text = text.replaceAll(" ", " S2040 ");
-        text = text.replaceAll(" ", " BRA12 ");
+        text = text.replace("\r\n", " BRA12 ");
         
         for (String c : text.split(" ")) {
             if (wordCounts.containsKey(c)) {
@@ -54,7 +61,7 @@ class CompacterAndDescompacter{
 
         String txt_header = new String();
         for (String word: wordCounts.keySet()){
-          txt_header += word + " : " + Integer.toHexString(wordCounts.get(word)) + "\n";
+          txt_header += word + " : " + Integer.toHexString(wordCounts.get(word)) + "E_O_V";
         }
         txt_header += "E_O_H\n";
 
@@ -63,8 +70,46 @@ class CompacterAndDescompacter{
         ReaderAndWrite.write(txt_header + text,output_path);
     }
 
-    public static void descompacter(String path) throws IOException {
+    public static void descompacter(String path) throws IOException,InterruptedException {
       String text = ReaderAndWrite.read(path);
-      System.out.println(text);
+      int index_header = text.indexOf("E_O_H\n", 0);
+
+      HashMap<String, Integer>wordCounts = new HashMap<>();
+
+      String header = text.substring(0, index_header);
+      text = text.substring(index_header+6);
+
+      for (String line: header.split("E_O_V")){
+        String key = line.substring(0,line.indexOf(" : "));
+        String value_str = line.substring(line.indexOf(" : ")+3); 
+        int value = Integer.parseInt(value_str, 16);
+        
+        wordCounts.put(key,value);
+      }
+
+      wordCounts = sortByValue(wordCounts);
+
+      HashMap<String, String> word_binary_txt = HollfmanCoding.return_tree(wordCounts);
+
+      LinkedHashMap<String, String> sorted_word_binary_txt = word_binary_txt.entrySet().stream()
+            .sorted(Comparator.comparingInt((Map.Entry<String, String> e) -> e.getValue().length()).reversed())
+            .collect(Collectors.toMap(
+                Map.Entry::getKey, 
+                Map.Entry::getValue, 
+                (e1, e2) -> e1, 
+                LinkedHashMap::new));
+
+      for (String word: sorted_word_binary_txt.keySet()) {
+        int charCode = Integer.parseInt(sorted_word_binary_txt.get(word), 2);
+        String bit_str = String.valueOf((char) charCode);
+
+        text = text.replaceAll(bit_str,word);
+      }
+
+      text = text.replaceAll( "S2040"," ");
+      text = text.replace("BRA12","\r\n");
+
+      path = path.replace(".z",".");
+      ReaderAndWrite.write(text,path);
     }
 }
