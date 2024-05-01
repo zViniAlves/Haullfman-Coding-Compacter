@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.Comparator;
+import scripts.HollfmanCoding;
+import utils.ReaderAndWrite;
 
 class CompacterAndDescompacter{
     public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm)
