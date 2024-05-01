@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -88,6 +89,13 @@ public class HollfmanCoding {
           }
           // System.out.println(binary_tree.get(0) + " : " + word_binary_txt + " : " + lista_words);
         }
+
+        for (Map.Entry<String, String> entry : word_binary_txt.entrySet()) {
+            String value = entry.getValue();
+            value = value.replaceFirst("^0+(?!$)", "");
+            word_binary_txt.put(entry.getKey(), value);
+        }
+
         return word_binary_txt;
     }
 }
